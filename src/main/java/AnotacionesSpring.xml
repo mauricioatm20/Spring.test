@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+		 http://www.springframework.org/schema/beans/spring-beans.xsd
+		 http://www.springframework.org/schema/context
+		 http://www.springframework.org/schema/context/spring-context.xsd">
+		
+		
+<!-- Indica en que paquetes buscara @Component,@Repository y @Service  -->
+	<context:component-scan base-package="es.cursogetafe.springxml.persistencia, 
+										  es.cursogetafe.springxml.negocio "/>	 
+		 
+		 
+<!-- Activa la inyeccion con @Autowired -->
+	<context:annotation-config   />
+	
+	<!-- 	Crea un bean basado en un fichero properties -->
+	<context:property-placeholder location="classpath:app.properties"/>
+	
+	
+	<beans profile = "produccion">
+		<bean id = "ds" class ="org.apache.commons.dbcp.BasicDataSource">
+			<property name="driverClassName"  value = "${bbdd.driver}"/>
+			<property name="url"  value = "${bbdd.url}"/>
+			<property name="username"  value = "${bbdd.user}"/>
+			<property name="password"  value = "${bbdd.pass}"/>
+		</bean>
+	</beans>
+	
+	<beans profile = "desarrollo">
+		<bean id = "ds_desarrollo" class ="org.apache.commons.dbcp.BasicDataSource">
+			<property name="driverClassName"  value = "${bbdd.external.driver}"/>
+			<property name="url"  value = "${bbdd.external.url}"/>
+			<property name="username"  value = "${bbdd.external.user}"/>
+			<property name="password"  value = "${bbdd.external.pass}"/>
+		</bean>
+	</beans>
+
+
+<!--      Abrir run/ run configuration/ arguments/ VM arguments/escribir -Dspring.profiles.active=   el perfil que se va trabajar  -->
+</beans>
+
+
